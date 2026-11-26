@@ -211,10 +211,6 @@ header{box-shadow:0 10px 26px -14px var(--shadow-col);}
   .boq-row{padding-inline:6px; margin-inline:-6px;}
 }
 /* ---- Tải ảnh, sao chép link ---- */
-.modal-tools{display:flex; align-items:center; gap:10px; flex:0 0 auto;}
-.modal-copy{border:1px solid var(--ink-soft); background:transparent; color:var(--ink); font:inherit; font-size:.78rem; font-weight:600; padding:6px 12px; border-radius:999px; cursor:pointer;}
-.modal-copy:hover{background:rgba(226,147,58,.12);}
-.modal-copy:focus-visible{outline:2px solid var(--accent); outline-offset:2px;}
 .lb-stage.is-loading img{visibility:hidden;}
 .lb-stage.is-loading::after{content:""; position:absolute; top:50%; left:50%; width:40px; height:40px; margin:-20px 0 0 -20px; border:3px solid rgba(237,233,221,.25); border-top-color:var(--accent); border-radius:50%; animation:lbSpin .8s linear infinite;}
 .lb-stage.is-error::after{content:"Không tải được ảnh. Vui lòng thử lại."; position:absolute; top:50%; left:0; right:0; text-align:center; color:rgba(237,233,221,.8);}
@@ -413,7 +409,7 @@ header{box-shadow:0 10px 26px -14px var(--shadow-col);}
   <div class="modal-panel" role="dialog" aria-modal="true" aria-labelledby="galleryModalTitle">
     <div class="modal-head">
       <h3 id="galleryModalTitle">Mẫu đồ án</h3>
-      <div class="modal-tools"><button type="button" class="modal-copy" id="galleryCopy">Sao chép link</button><button class="modal-close" type="button" aria-label="Đóng">&times;</button></div>
+      <button class="modal-close" type="button" aria-label="Đóng">&times;</button>
     </div>
     <p class="modal-note">Hình ảnh mẫu tham khảo cho hạng mục này.</p>
     <div class="gallery-grid" id="galleryModalGrid"></div>
@@ -469,7 +465,6 @@ header{box-shadow:0 10px 26px -14px var(--shadow-col);}
   var defaultNote = noteEl.textContent;
   var currentType = null;
   function track(name, params){ try { if (window.gtag) window.gtag('event', name, params || {}); } catch (e) {} }
-  function deepLink(type){ return location.href.split('#')[0] + '#' + type; }
   function setHash(type){ try { history.replaceState(null, '', '#' + type); } catch (e) {} }
   function clearHash(){ try { history.replaceState(null, '', location.pathname + location.search); } catch (e) {} }
 
@@ -523,27 +518,6 @@ header{box-shadow:0 10px 26px -14px var(--shadow-col);}
   });
 
   /* ---------- Link riêng cho từng loại công trình ---------- */
-  var copyBtn = document.getElementById('galleryCopy');
-  function copyText(text){
-    if (navigator.clipboard && navigator.clipboard.writeText) return navigator.clipboard.writeText(text);
-    return new Promise(function(resolve, reject){
-      var ta = document.createElement('textarea');
-      ta.value = text; ta.setAttribute('readonly', ''); ta.style.cssText = 'position:fixed;opacity:0;top:0;left:0';
-      document.body.appendChild(ta); ta.select();
-      var ok = false;
-      try { ok = document.execCommand('copy'); } catch (e) {}
-      document.body.removeChild(ta);
-      ok ? resolve() : reject();
-    });
-  }
-  if (copyBtn) copyBtn.addEventListener('click', function(){
-    if (!currentType) return;
-    var url = deepLink(currentType);
-    copyText(url).then(function(){ copyBtn.textContent = 'Đã sao chép'; },
-                       function(){ window.prompt('Sao chép link này:', url); });
-    setTimeout(function(){ copyBtn.textContent = 'Sao chép link'; }, 1800);
-    track('copy_link', {project_type: currentType});
-  });
   function openFromHash(){
     var slug = '';
     try { slug = decodeURIComponent((location.hash || '').slice(1)); } catch (e) {}

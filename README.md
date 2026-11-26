@@ -23,7 +23,7 @@ Trang tĩnh (HTML) chạy được trên GitHub Pages, không cần máy chủ.
 
 ## Link riêng cho từng loại công trình
 
-Thêm `#` và tên loại công trình vào sau địa chỉ trang, hoặc bấm nút *Sao chép link* trong cửa sổ xem mẫu:
+Thêm `#` và tên loại công trình vào sau địa chỉ trang, trang sẽ mở thẳng cửa sổ mẫu tương ứng:
 
 - `#cao-tang-10-15`, `#cao-tang-20-30`, `#truong-lien-cap`
 - `#nha-cong-vu`, `#truong-mau-giao`, `#nha-thep-cong-nghiep`
